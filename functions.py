@@ -241,14 +241,13 @@ def value_counts_for_selected_columns(df: pd.DataFrame, columns: list):
             print(f'Column "{col}" not found in DataFrame.\n')
 
 
-def evaluate_model(model, X, y, model_name):
+def evaluate_model(y_true, y_pred, model_name):
     """
     Evaluates a classification model using common metrics (accuracy, precision, recall, F1-score).
 
     Parameters:
-        model: Trained classification model (must have a .predict() method).
-        X: Input features for prediction.
-        y: True target values.
+        y_true: True target values.
+        y_pred: Predicted target values.
         model_name (str): Name of the model for identification in the results.
 
     Returns:
@@ -258,22 +257,11 @@ def evaluate_model(model, X, y, model_name):
             - 'Precision': Precision score
             - 'Recall': Recall score
             - 'F1-Score': F1 score
-
-    Example:
-        >>> from sklearn.linear_model import LogisticRegression
-        >>> from sklearn.datasets import load_iris
-        >>> data = load_iris()
-        >>> X, y = data.data, (data.target == 0).astype(int)  # binary classification
-        >>> model = LogisticRegression().fit(X, y)
-        >>> result = evaluate_model(model, X, y, "Logistic Regression")
-        >>> print(result)
-        {'Model': 'Logistic Regression', 'Accuracy': 0.98, 'Precision': 0.96, 'Recall': 1.0, 'F1-Score': 0.98}
     """
-    y_pred = model.predict(X)
     return {
         'Model': model_name,
-        'Accuracy': accuracy_score(y, y_pred),
-        'Precision': precision_score(y, y_pred),
-        'Recall': recall_score(y, y_pred),
-        'F1-Score': f1_score(y, y_pred)
+        'Accuracy': accuracy_score(y_true, y_pred),
+        'Precision': precision_score(y_true, y_pred),
+        'Recall': recall_score(y_true, y_pred),
+        'F1-Score': f1_score(y_true, y_pred)
     }
